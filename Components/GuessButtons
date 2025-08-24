@@ -1,0 +1,75 @@
+import React from 'react';
+import { Button } from '@/components/ui/button';
+import { CheckCircle, XCircle } from 'lucide-react';
+import { motion } from 'framer-motion';
+
+export default function GuessButtons({ onGuess, disabled, showResult, userGuess, correctAnswer }) {
+  const getButtonStyle = (isNatty) => {
+    if (!showResult) {
+      return isNatty 
+        ? "bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white shadow-lg transform hover:scale-105"
+        : "bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white shadow-lg transform hover:scale-105";
+    }
+    
+    const wasCorrect = (isNatty && correctAnswer) || (!isNatty && !correctAnswer);
+    const wasSelected = (isNatty && userGuess) || (!isNatty && !userGuess);
+    
+    if (wasSelected && wasCorrect) {
+      return isNatty 
+        ? "bg-gradient-to-r from-green-500 to-green-600 text-white border-2 border-green-300"
+        : "bg-gradient-to-r from-red-500 to-red-600 text-white border-2 border-red-300";
+    } else if (wasSelected && !wasCorrect) {
+      return "bg-gradient-to-r from-gray-600 to-gray-700 text-gray-300 border-2 border-gray-500";
+    } else if (!wasSelected && ((isNatty && correctAnswer) || (!isNatty && !correctAnswer))) {
+      return isNatty 
+        ? "bg-green-500/20 text-green-400 border-2 border-green-400"
+        : "bg-red-500/20 text-red-400 border-2 border-red-400";
+    }
+    
+    return "bg-gray-700 text-gray-400";
+  };
+
+  return (
+    <div className="flex gap-6 w-full max-w-md">
+      <motion.div 
+        className="flex-1"
+        whileTap={{ scale: disabled ? 1 : 0.95 }}
+      >
+        <Button
+          onClick={() => !disabled && onGuess(true)}
+          disabled={disabled}
+          className={`w-full h-16 text-xl font-bold rounded-2xl transition-all duration-300 ${getButtonStyle(true)}`}
+        >
+          <div className="flex items-center gap-3">
+            {showResult && userGuess === true && (
+              userGuess === correctAnswer ? 
+                <CheckCircle className="w-6 h-6" /> : 
+                <XCircle className="w-6 h-6" />
+            )}
+            NATTY
+          </div>
+        </Button>
+      </motion.div>
+      
+      <motion.div 
+        className="flex-1"
+        whileTap={{ scale: disabled ? 1 : 0.95 }}
+      >
+        <Button
+          onClick={() => !disabled && onGuess(false)}
+          disabled={disabled}
+          className={`w-full h-16 text-xl font-bold rounded-2xl transition-all duration-300 ${getButtonStyle(false)}`}
+        >
+          <div className="flex items-center gap-3">
+            {showResult && userGuess === false && (
+              userGuess === correctAnswer ? 
+                <CheckCircle className="w-6 h-6" /> : 
+                <XCircle className="w-6 h-6" />
+            )}
+            NOT NATTY
+          </div>
+        </Button>
+      </motion.div>
+    </div>
+  );
+}

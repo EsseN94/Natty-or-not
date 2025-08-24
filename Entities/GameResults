@@ -1,0 +1,38 @@
+{
+  "name": "GameResult",
+  "type": "object",
+  "properties": {
+    "image_url": {
+      "type": "string",
+      "description": "URL of the person's image"
+    },
+    "person_name": {
+      "type": "string",
+      "description": "Name of the person in the image"
+    },
+    "is_natural": {
+      "type": "boolean",
+      "description": "True if the person is natural, false if enhanced"
+    },
+    "user_guess": {
+      "type": "boolean",
+      "description": "User's guess - true for natty, false for not natty"
+    },
+    "was_correct": {
+      "type": "boolean",
+      "description": "Whether the user guessed correctly"
+    },
+    "score": {
+      "type": "number",
+      "description": "Current score when this guess was made"
+    }
+  },
+  "required": [
+    "image_url",
+    "person_name",
+    "is_natural",
+    "user_guess",
+    "was_correct",
+    "score"
+  ]
+}
